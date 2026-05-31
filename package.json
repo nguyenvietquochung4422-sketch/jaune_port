@@ -1,0 +1,7 @@
+{
+  "name": "jaune-port-root",
+  "private": true,
+  "scripts": {
+    "build": "npm install --prefix portfolio && npm run build --prefix portfolio && rm -rf public && cp -r portfolio/dist public"
+  }
+}
