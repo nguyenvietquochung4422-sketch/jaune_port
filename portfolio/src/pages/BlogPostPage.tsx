@@ -22,6 +22,10 @@ const LABELS = {
     commentingAs: 'Commenting as:',
     yourComment: 'Your comment...',
     postComment: 'Post Comment',
+    edit: 'Edit',
+    delete: 'Delete',
+    save: 'Save',
+    cancel: 'Cancel',
   },
   vi: {
     backToBlog: 'Tất cả bài viết',
@@ -38,6 +42,10 @@ const LABELS = {
     commentingAs: 'Bình luận với tư cách:',
     yourComment: 'Nội dung bình luận...',
     postComment: 'Gửi bình luận',
+    edit: 'Sửa',
+    delete: 'Xóa',
+    save: 'Lưu',
+    cancel: 'Hủy',
   },
 }
 
@@ -84,6 +92,8 @@ export default function BlogPostPage() {
   // Comments States
   const [comments, setComments] = useState<Comment[]>([])
   const [commentText, setCommentText] = useState('')
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
+  const [editingCommentText, setEditingCommentText] = useState('')
 
   useEffect(() => {
     if (!slug || !user) return
@@ -144,6 +154,36 @@ export default function BlogPostPage() {
     localStorage.setItem(`comments_${slug}`, JSON.stringify(updatedComments))
 
     setCommentText('')
+  }
+
+  const handleEditComment = (id: string, text: string) => {
+    setEditingCommentId(id)
+    setEditingCommentText(text)
+  }
+
+  const handleSaveComment = (id: string) => {
+    if (!editingCommentText.trim() || !slug) return
+    const updatedComments = comments.map((c) => {
+      if (c.id === id) {
+        return { ...c, text: editingCommentText.trim() }
+      }
+      return c
+    })
+    setComments(updatedComments)
+    localStorage.setItem(`comments_${slug}`, JSON.stringify(updatedComments))
+    setEditingCommentId(null)
+    setEditingCommentText('')
+  }
+
+  const handleDeleteComment = (id: string) => {
+    if (!slug) return
+    const updatedComments = comments.filter((c) => c.id !== id)
+    setComments(updatedComments)
+    localStorage.setItem(`comments_${slug}`, JSON.stringify(updatedComments))
+    if (editingCommentId === id) {
+      setEditingCommentId(null)
+      setEditingCommentText('')
+    }
   }
 
   const currentIdx = posts.findIndex((p) => p.slug === slug)
@@ -317,30 +357,88 @@ export default function BlogPostPage() {
                 {/* Comment list */}
                 <div className="flex flex-col gap-4 mb-8">
                   {comments.length > 0 ? (
-                    comments.map((comment) => (
-                      <div 
-                        key={comment.id} 
-                        className="p-5 rounded-2xl flex gap-4 text-left border"
-                        style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
-                      >
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm shrink-0 uppercase select-none" style={{ background: comment.avatarColor || 'var(--accent)' }}>
-                          {comment.name.slice(0, 2)}
-                        </div>
-                        <div className="overflow-hidden">
-                          <div className="flex items-center gap-3 mb-1">
-                            <span className="text-[13px] font-bold" style={{ color: 'var(--text)' }}>{comment.name}</span>
-                            <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
-                              {new Date(comment.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'vi-VN', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric'
-                              })}
-                            </span>
+                    comments.map((comment) => {
+                      const isOwner = user && comment.email === user.email
+                      const isEditing = editingCommentId === comment.id
+
+                      return (
+                        <div 
+                          key={comment.id} 
+                          className="p-5 rounded-2xl flex gap-4 text-left border"
+                          style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}
+                        >
+                          <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm shrink-0 uppercase select-none" style={{ background: comment.avatarColor || 'var(--accent)' }}>
+                            {comment.name.slice(0, 2)}
                           </div>
-                          <p className="text-[13px] leading-relaxed text-var(--text-muted)" style={{ wordBreak: 'break-word' }}>{comment.text}</p>
+                          <div className="flex-1 overflow-hidden flex flex-col justify-between">
+                            <div>
+                              <div className="flex items-center gap-3 mb-1">
+                                <span className="text-[13px] font-bold" style={{ color: 'var(--text)' }}>{comment.name}</span>
+                                <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                                  {new Date(comment.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'vi-VN', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })}
+                                </span>
+                              </div>
+
+                              {isEditing ? (
+                                <div className="mt-2 flex flex-col gap-2">
+                                  <textarea
+                                    value={editingCommentText}
+                                    onChange={(e) => setEditingCommentText(e.target.value)}
+                                    rows={3}
+                                    className="w-full px-3 py-2 rounded-xl text-[13px] border focus:outline-none resize-none"
+                                    style={{ background: 'var(--bg)', color: 'var(--text)', borderColor: 'var(--border)' }}
+                                  />
+                                  <div className="flex gap-2 self-start">
+                                    <button
+                                      onClick={() => handleSaveComment(comment.id)}
+                                      className="px-3.5 py-1.5 rounded-lg text-white text-[11px] font-bold cursor-pointer transition-all border-0"
+                                      style={{ background: 'var(--accent)' }}
+                                    >
+                                      {t.save}
+                                    </button>
+                                    <button
+                                      onClick={() => setEditingCommentId(null)}
+                                      className="px-3.5 py-1.5 rounded-lg text-var(--text) text-[11px] font-bold cursor-pointer transition-all border"
+                                      style={{ background: 'transparent', borderColor: 'var(--border)' }}
+                                    >
+                                      {t.cancel}
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-[13px] leading-relaxed text-var(--text-muted) whitespace-pre-wrap" style={{ wordBreak: 'break-word' }}>
+                                  {comment.text}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Owner controls */}
+                            {isOwner && !isEditing && (
+                              <div className="flex items-center gap-4 mt-3 pt-3 border-t border-dashed" style={{ borderColor: 'var(--border)' }}>
+                                <button
+                                  onClick={() => handleEditComment(comment.id, comment.text)}
+                                  className="text-[11px] font-bold flex items-center gap-1 hover:opacity-60 transition-opacity bg-transparent border-0 cursor-pointer"
+                                  style={{ color: 'var(--accent)' }}
+                                >
+                                  ✏️ {t.edit}
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteComment(comment.id)}
+                                  className="text-[11px] font-bold flex items-center gap-1 hover:opacity-60 transition-opacity bg-transparent border-0 cursor-pointer"
+                                  style={{ color: '#EA4335' }}
+                                >
+                                  🗑️ {t.delete}
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      )
+                    })
                   ) : (
                     <p className="text-[13px] text-left italic py-4" style={{ color: 'var(--text-muted)' }}>
                       {lang === 'en' ? 'No comments yet. Be the first to share your thoughts.' : 'Chưa có ý kiến nào. Hãy là người đầu tiên chia sẻ suy nghĩ của bạn.'}
