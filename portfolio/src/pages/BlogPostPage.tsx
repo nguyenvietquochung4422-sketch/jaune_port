@@ -82,8 +82,6 @@ export default function BlogPostPage() {
     return () => window.removeEventListener('blog_lang_change', syncLang)
   }, [])
 
-  if (!post) return <Navigate to="/blog" replace />
-
   // Metrics States
   const [views, setViews] = useState(0)
   const [likes, setLikes] = useState(0)
@@ -122,6 +120,8 @@ export default function BlogPostPage() {
       setComments([])
     }
   }, [slug, user])
+
+  if (!post) return <Navigate to="/blog" replace />
 
   const handleLike = () => {
     if (!slug || !user) return
