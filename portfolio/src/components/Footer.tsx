@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { cv } from '../data/cv'
 
 export default function Footer() {
@@ -112,14 +111,6 @@ export default function Footer() {
               ✳︎
             </span>
           </a>
-
-          {/* Links */}
-          <nav className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-[13px] text-white/50">
-            <a href="/#about" className="hover:text-white transition-colors duration-200">About</a>
-            <a href="/#experience" className="hover:text-white transition-colors duration-200">Experience</a>
-            <a href="/#research" className="hover:text-white transition-colors duration-200">Research</a>
-            <Link to="/blog" className="hover:text-white transition-colors duration-200">Blog</Link>
-          </nav>
 
           {/* Copyright */}
           <p className="text-[12px] text-white/30">
