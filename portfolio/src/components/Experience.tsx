@@ -21,7 +21,7 @@ export default function Experience() {
               <div key={i} className="relative pl-16 md:pl-24">
                 {/* Timeline dot */}
                 <div
-                  className="absolute left-[13px] md:left-[23px] top-1 w-5 h-5 rounded-full flex items-center justify-center"
+                  className="absolute left-[10px] md:left-[22px] top-1.5 w-5 h-5 rounded-full flex items-center justify-center"
                   style={{ background: 'var(--accent)', boxShadow: '0 0 0 4px var(--accent-light)' }}
                 >
                   <div className="w-2 h-2 rounded-full bg-white" />

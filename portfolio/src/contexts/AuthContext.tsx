@@ -101,7 +101,7 @@ const GoogleLoginGate: React.FC<LoginGateProps> = ({ onLogin }) => {
     >
       {/* Google-like card */}
       <div 
-        className="w-full max-w-[450px] p-10 rounded-[28px] bg-white text-left flex flex-col justify-between min-h-[480px]"
+        className="w-full max-w-[450px] p-6 sm:p-10 rounded-[28px] bg-white text-left flex flex-col justify-between min-h-[480px]"
         style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}
       >
         <div>

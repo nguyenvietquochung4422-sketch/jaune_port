@@ -238,7 +238,7 @@ export default function BlogPostPage() {
             
             {/* Left Sidebar: Urban Design Terminology */}
             <aside 
-              className="order-2 lg:order-1 rounded-2xl p-5 lg:sticky lg:top-24"
+              className="order-2 lg:order-1 rounded-2xl p-5 lg:sticky lg:top-24 w-full"
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}
             >
               <h3 
@@ -247,7 +247,7 @@ export default function BlogPostPage() {
               >
                 {t.urbanGlossary}
               </h3>
-              <div className="flex flex-col gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
                 {post.glossary?.urbanDesign[lang].map((item, i) => (
                   <div key={i} className="text-left">
                     <p className="font-bold text-[13px] mb-1" style={{ color: 'var(--accent)' }}>
@@ -423,7 +423,7 @@ export default function BlogPostPage() {
 
             {/* Right Sidebar: Data Science Terminology */}
             <aside 
-              className="order-3 rounded-2xl p-5 lg:sticky lg:top-24"
+              className="order-3 rounded-2xl p-5 lg:sticky lg:top-24 w-full"
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}
             >
               <h3 
@@ -432,7 +432,7 @@ export default function BlogPostPage() {
               >
                 {t.dataGlossary}
               </h3>
-              <div className="flex flex-col gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
                 {post.glossary?.dataScience[lang].map((item, i) => (
                   <div key={i} className="text-left">
                     <p className="font-bold text-[13px] mb-1" style={{ color: 'var(--accent)' }}>

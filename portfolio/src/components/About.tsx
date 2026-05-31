@@ -36,7 +36,7 @@ export default function About() {
             </div>
 
             {/* Stats row */}
-            <div className="flex gap-10 mt-10 pt-8" style={{ borderTop: '1px solid var(--border)' }}>
+            <div className="flex flex-wrap gap-x-8 gap-y-4 mt-10 pt-8" style={{ borderTop: '1px solid var(--border)' }}>
               {[
                 { n: '4', label: 'Research Awards' },
                 { n: '3.66', label: 'GPA / 4.0' },
@@ -68,17 +68,17 @@ export default function About() {
                 className="rounded-2xl p-6 transition-shadow duration-300 hover:shadow-lg"
                 style={{ background: 'var(--bg)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}
               >
-                <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-3">
                   <div>
-                    <h3 className="text-[15px] font-bold leading-tight" style={{ color: 'var(--text)', fontFamily: 'var(--font-heading)' }}>
+                    <h3 className="text-[15px] font-bold leading-tight text-left" style={{ color: 'var(--text)', fontFamily: 'var(--font-heading)' }}>
                       {edu.degree}
                     </h3>
-                    <p className="text-[13px] mt-0.5 font-medium" style={{ color: 'var(--accent)' }}>
+                    <p className="text-[13px] mt-0.5 font-medium text-left" style={{ color: 'var(--accent)' }}>
                       {edu.university}
                     </p>
                   </div>
                   <span
-                    className="shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold"
+                    className="self-start sm:self-auto shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold"
                     style={{ background: 'var(--surface)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}
                   >
                     {edu.period}
